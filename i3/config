@@ -1,0 +1,178 @@
+#tecla elegida para atajos, mod4 es la tecla windor y mod1 es alt.
+	set $mod Mod4
+	set $alt Mod1
+#fuente utilizada para los titulos de las ventanas
+	font pango:monospace 8
+#nose que hace
+	floating_modifier $mod
+#win+enter lanza una terminal. en este caso urxvt
+	bindsym $mod+Return exec urxvt
+#cerrar ventana en foco
+	bindsym $mod+Shift+q kill
+#ejectuar programa, al estilo run de windor
+	bindsym $mod+r exec dmenu_run
+#comandos foco sobre distintas ventanas
+	bindsym $mod+h focus left
+	bindsym $mod+j focus down
+	bindsym $mod+k focus up
+	bindsym $mod+l focus right
+
+#bindsym $mod+l focus right
+#bindsym $mod+Left focus left
+#bindsym $mod+Down focus down
+#bindsym $mod+Up focus up
+#bindsym $mod+Right focus right
+
+#comandos mover ventanas
+	bindsym $mod+Shift+h move left
+	bindsym $mod+Shift+j move down
+	bindsym $mod+Shift+k move up
+	bindsym $mod+Shift+l move right
+
+#bindsym $mod+Shift+Left move left
+#bindsym $mod+Shift+Down move down
+#bindsym $mod+Shift+Up move up
+#bindsym $mod+Shift+Right move right
+
+#ajuste de ventanas, apilar, pestañas, etc
+#	bindsym $mod+t splith
+#	bindsym $mod+v split v
+#pantala completa
+	bindsym $mod+F11 fullscreen toggle
+
+#	bindsym $mod+s layout stacking
+#	bindsym $mod+w layout tabbed
+
+
+#modo alternado para apilar horizontal o vertical y tambien en pestanas
+	bindsym $mod+w layout toggle tabbed stacking splitv splith
+
+#	bindsym $mod+Shift+space floating toggle
+#	bindsym $mod+space focus mode_toggle
+#nose si se utiliza, hasta ahora no me fue necesario
+#es para enfocar en la primer ventana que se abrio
+#	bindsym $mod+a focus parent
+
+#espacios de trabajo
+#utilizo Awesome font para los iconos/grafos
+	set $workspace1 ""
+	set $workspace2 ""
+	set $workspace3 ""
+	set $workspace9 ""
+	set $workspace4 ""
+	set $workspace10 ""
+#atajo teclado para cambiar de espacio de trabajo
+	bindsym $mod+1 workspace $workspace1
+	bindsym $mod+2 workspace $workspace2
+	bindsym $mod+3 workspace $workspace3
+	bindsym $mod+4 workspace $workspace4
+	bindsym $mod+5 workspace 5
+	bindsym $mod+6 workspace 6
+	bindsym $mod+7 workspace 7
+	bindsym $mod+8 workspace 8
+	bindsym $mod+9 workspace $workspace9
+	bindsym $mod+0 workspace $workspace10
+#mover una ventana a un espacio de trabajo
+	bindsym $mod+Shift+1 move container to workspace $workspace1
+	bindsym $mod+Shift+2 move container to workspace $workspace2
+	bindsym $mod+Shift+3 move container to workspace $workspace3
+	bindsym $mod+Shift+4 move container to workspace $workspace4
+	bindsym $mod+Shift+5 move container to workspace 5
+	bindsym $mod+Shift+6 move container to workspace 6
+	bindsym $mod+Shift+7 move container to workspace 7
+	bindsym $mod+Shift+8 move container to workspace 8
+	bindsym $mod+Shift+9 move container to workspace $workspace9
+	bindsym $mod+Shift+0 move container to workspace $workspace10
+#mover programas a espacios especificos, se usa xprop para
+#encontrar la "propiedad class"
+	assign [class="TelegramDesktop"] $workspace10
+	assign [class="Firefox"] $workspace3
+	for_window [class="Spotify"] move to wokspace $workspace9
+	assign [class="Surf"] $workspace3
+	assign [class="Caja"] $workspace2
+	assign [class="TeXstudio"] $workspace4
+
+#abrir caja explorador cuando se presiona win+e
+	bindsym $mod+e exec caja
+#abrir firefox
+	bindsym $mod+f exec firefox
+#abrir pdf
+	bindsym $mod+p exec qpdfview
+#abrir ltspice
+	bindsym $mod+s exec ltspice
+#abrir texstudio
+	bindsym $mod+t exec texstudio
+
+#>> COMANDOS PANICO
+	bindsym $mod+Shift+c reload
+	bindsym $mod+Shift+r restart
+	bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+#mode "resize" {
+#bindsym j resize shrink width 10 px or 10 ppt
+#bindsym k resize grow height 10 px or 10 ppt
+#bindsym l resize shrink height 10 px or 10 ppt
+#bindsym ntilde resize grow width 10 px or 10 ppt
+#bindsym Left resize shrink width 10 px or 10 ppt
+#bindsym Down resize grow height 10 px or 10 ppt
+#bindsym Up resize shrink height 10 px or 10 ppt
+#bindsym Right resize grow width 10 px or 10 ppt
+#bindsym Return mode "default"
+#bindsym Escape mode "default"
+#}
+#bindsym $mod+r mode "resize"
+
+#BARRA DE i3 Blocks
+bar {
+        status_command i3blocks
+		#oculta iconos del systemtray, no aparece el icono de telegram
+		tray_output none
+}
+
+#ventanas sin titulos
+	for_window [class=^.*"] border pixel 1
+	new_window 1pixel
+
+#atajo para ir bloquear pc
+	bindsym $MOD+SHIFT+x exec i3lock-fancy
+
+#atajo para captura de pantalla, depende de xclip e imagemagick
+	bindsym --release Print exec import png:- | xclip -selection clipboard -t image/png
+#atajo captura pantalla completa depende de mate
+	bindsym --release $MOD+Print exec mate-panel-screenshot
+
+#fondo de pantalla usando feh, se ejecuta siempre al iniciar o reiniciar
+	exec_always --no-startup-id feh --bg-scale /home/dani/Pictures/wall.jpg
+#keymap por defecto
+exec "setxkbmap -layout latam"
+
+#teclas multimedia
+#subir volumen
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
+#bajar volumen
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
+#mute
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
+#play
+bindsym XF86AudioPlay exec playerctl play-pause
+#stop
+bindsym XF86AudioStop exec playerctl stop
+#siguiente
+bindsym XF86AudioNext exec playerctl next
+#anterior
+bindsym XF86AudioPrev exec playerctl previous
+#calculadora
+bindsym XF86Calculator exec mate-calc
+
+
+for_window [class="Yad"] floating enable
+for_window [class="(?i)VirtualBox"] floating enable
+for_window [class="^Steam$" title="^Friends$"] floating enable
+for_window [class="^Steam$" title="Steam - News"] floating enable
+for_window [class="^Steam$" title=".* - Chat"] floating enable
+for_window [class="^Steam$" title="^Settings$"] floating enable
+for_window [class="^Steam$" title=".* - event started"] floating enable
+for_window [class="^Steam$" title=".* CD key"] floating enable
+for_window [class="^Steam$" title="^Steam - Self Updater$"] floating enable
+for_window [class="^Steam$" title="^Screenshot Uploader$"] floating enable
+for_window [class="^Steam$" title="^Steam Guard - Computer Authorization Required$"] floating enable
+for_window [title="^Steam Keyboard$"] floating enable
