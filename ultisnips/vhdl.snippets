@@ -1,0 +1,327 @@
+# A valid snippet should starts with:
+#
+#		snippet trigger_word [ "description" [ options ] ]
+#
+# and end with:
+#
+#		endsnippet
+#
+# Snippet options:
+#
+#		b - Beginning of line.
+#		i - In-word expansion.
+#		w - Word boundary.
+#		r - Regular expression
+#		e - Custom context snippet
+#		A - Snippet will be triggered automatically, when condition matches.
+#
+# Basic example:
+#
+#		snippet emitter "emitter properties" b
+#		private readonly ${1} = new Emitter<$2>()
+#		public readonly ${1/^_(.*)/$1/}: Event<$2> = this.$1.event
+#		endsnippet
+#
+# Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
+snippet meta(data)? "Author Metadata" A
+--------------------------------------------------------------------------------
+-- Company: <${1:company name}>
+-- Engineer: <${2:engineer name}>
+--
+-- Create Date: `!v strftime("%d %B, %Y - %X %Z")`
+-- Design Name: <name_of_top-level_design>
+-- Component Name: <name_of_this_component>
+-- Target Device: <target device>
+-- Tool versions: <tool_versions>
+-- Description:
+--    ${3:description here}
+-- Dependencies:
+--    <Dependencies here>
+-- Revision:
+--    <Code_revision_information>
+-- Additional Comments:
+--    <Additional_comments>
+--------------------------------------------------------------------------------
+endsnippet
+
+snippet vhdl "Boilerplate"
+-- Fecha: `!v expand('%:t')`
+-- Author: `!v $USERNAME`
+-- Date: `!v strftime("%d %B, %Y - %X %Z")` 
+library ieee;
+use ieee.std_logic_1164.all;
+endsnippet
+
+snippet bib(lioteca)? "Use Clause"
+-- A library clause declares a name as a library. It
+-- does not create the library; it simply forward declares
+-- it.
+library <library_name>;
+-- Use clauses import declarations into the current scope.
+-- If more than one use clause imports the same name into the
+-- the same scope, none of the names are imported.
+-- Import all the declarations in a package
+-- Import all the declarations in a package
+use <library_name>.<package_name>.all;
+-- Import a specific declaration from a package
+use <library_name>.<package_name>.<object_name>;
+-- Import a specific entity from a library
+use <library_name>.<entity_name>;
+-- Import from the work library. The work library is an alias
+-- for the library containing the current design unit.
+use work.<package_name>.all;
+-- Commonly imported packages:
+	-- STD_LOGIC and STD_LOGIC_VECTOR types, and relevant functions
+	use ieee.std_logic_1164.all;
+	-- SIGNED and UNSIGNED types, and relevant functions
+	use ieee.numeric_std.all;
+	-- Basic sequential functions and concurrent procedures
+	use ieee.VITAL_Primitives.all;
+	-- Library of Parameterized Modules:
+	-- customizable, device-independent logic functions
+	use lpm.lpm_components.all;
+	-- Altera Megafunctions
+	use altera_mf.altera_mf_components.all;
+endsnippet
+
+snippet use "Library Clause"
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use ieee.std_logic_unsigned.all;
+endsnippet
+
+snippet entity "Entity declaration"
+entity ${1:entity name} is
+	port
+	(
+		-- Input ports
+		$2
+		-- Output ports
+		$3
+	);
+end entity $1;
+endsnippet
+
+snippet arc(hitecture)? "Architecture declaration"
+architecture ${1:architecture name} of ${2:entity name} is
+-- Declarations (optional)
+begin
+${3:-- Process Statement (optional)
+-- Concurrent Procedure Call (optional)
+-- Concurrent Signal Assignment (optional)
+-- Conditional Signal Assignment (optional)
+-- Selected Signal Assignment (optional)
+-- Component Instantiation Statement (optional)
+-- Generate Statement (optional)}
+end architecture $1;
+endsnippet
+
+## Declarations
+
+# std_logic
+snippet st "Standard Logic Signal"
+signal ${1} : std_logic${2};${3}
+endsnippet
+
+# std_logic_vector
+snippet sv "Standard Logic Vector Signal"
+signal ${1} : std_logic_vector (${2} downto 0)${3};${4}
+endsnippet
+
+# std_logic in
+snippet ist "Standard Logic Input"
+${1} : in std_logic;${2}
+endsnippet
+
+# std_logic_vector in
+snippet isv "Standard Logic Vector Input"
+${1} : in std_logic_vector (${2} downto 0);${3}
+endsnippet
+
+# std_logic out
+snippet ost "Standard Logic Output"
+${1} : out std_logic;${3}
+endsnippet
+
+# std_logic_vector out
+snippet osv "Standard Logic Vector Output"
+${1} : out std_logic_vector (${2} downto 0);${3}
+endsnippet
+
+# unsigned
+snippet un "Unsigned Signal"
+signal ${1} : unsigned (${2} downto 0);${3}
+endsnippet
+
+# generic
+snippet gen "Generic"
+generic(N : positive := ${1});${2}
+endsnippet
+
+## Process Statements
+
+# process
+snippet pr "Process statement"
+process (${1})
+	begin
+		${2}
+end process;
+endsnippet
+
+# process with clock
+snippet prc "Process statement w/ clock"
+process (${1:clk})
+begin
+	if rising_edge ($1) then
+		${2}
+	end if;
+end process;
+endsnippet
+
+# process with clock and reset
+snippet prcr "Process statement w/ clock & reset"
+process (${1:clk}, ${2:nrst})
+begin
+	if ($2 = '${3:0}') then
+		${4}
+	elsif rising_edge($1) then
+		${5}
+	end if;
+end process;
+endsnippet
+
+# process all
+snippet pra "Process all statement"
+process (${1:all})
+begin
+	${2}
+end process;
+endsnippet
+
+## Control Statements
+
+# if
+snippet if "IF statement"
+if ${1} then
+	${2}
+end if;
+endsnippet
+
+# if-else 
+snippet ife "IF-ELSE statement"
+if ${1} then
+	${2}
+else
+	${3}
+end if;
+endsnippet
+
+# else
+snippet el "ELSE statement"
+else
+	${1}
+endsnippet
+
+# elif
+snippet eif "ELIF statement"
+elsif ${1} then
+	${2}
+endsnippet
+
+# case
+snippet ca "CASE statement"
+case ${1} is
+	${2}
+end case;
+endsnippet
+
+# when
+snippet wh "WHEN statement"
+when ${1} =>
+	${2}
+endsnippet
+
+# for
+snippet for "FOR statement"
+for ${1:i} in ${2} ${3:to} ${4} loop
+	${5}
+end loop;
+endsnippet
+
+# while
+snippet wh "WHILE statement"
+while ${1} loop
+	${2}
+end loop;
+endsnippet
+
+# select
+snippet sel "SELECT statement"
+with $1 select
+	$2 <= 	$3 when "$4",
+			$5
+endsnippet
+
+## Misc
+
+# others
+snippet oth "Others assignment"
+(others => '${1:0}')
+endsnippet
+
+# downto
+snippet dt "Down to"
+($1 downto 0)
+endsnippet
+
+# integer image
+snippet ii "Integer Image"
+integer'image($1)
+endsnippet
+
+## Testbench
+
+snippet asv "Assert vector"
+assert $1 = "$2"
+	report "$3"
+	severity failure;
+endsnippet
+
+snippet asb "Assert binary"
+assert $1 = '$2'
+	report "$3"
+	severity failure;
+endsnippet
+
+snippet tb "Testbench template"
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity $1_tb is
+end entity $1_tb;
+architecture test of $1_tb is
+	component $1 is
+	port
+	(
+	
+	);
+	end component $1;
+	$3
+begin
+dut: $1 port map
+	(
+	
+	);
+Prueba:
+	process begin
+		report "Verifying $1"
+		severity note;
+		$5
+		report "Success!"
+		severity note;
+		wait;
+	end process Prueba;
+end architecture test;
+endsnippet
